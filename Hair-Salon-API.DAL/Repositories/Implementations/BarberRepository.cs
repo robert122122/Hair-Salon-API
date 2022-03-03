@@ -10,6 +10,6 @@ namespace Hair_Salon_API.DAL.Repositories.Implementations
 {
     public class BarberRepository: BaseRepository<Barber>, IBarberRepository
     {
-        public BarberRepository(HairdresserContext dbContext) : base(dbContext) { }
+        public BarberRepository(AppointmentsContext dbContext) : base(dbContext) { }
     }
 }
