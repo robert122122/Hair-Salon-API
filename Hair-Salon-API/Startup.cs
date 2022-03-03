@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
+using Hair_Salon_API.Services.Models;
 
 namespace Hair_Salon_API
 {
@@ -45,6 +46,8 @@ namespace Hair_Salon_API
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IServiceService, ServiceService>();
             services.AddScoped<IServiceBarberService, ServiceBarberService>();
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, MailService>();
 
             services.AddAutoMapper(assemblies);
 
