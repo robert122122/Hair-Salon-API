@@ -24,9 +24,9 @@ namespace Hair_Salon_API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("HairdresserConnectionString");
+            var connectionString = Configuration.GetConnectionString("AppointmentsConnectionString");
 
-            services.AddDbContext<HairdresserContext>(
+            services.AddDbContext<AppointmentsContext>(
                 options =>
                     options.UseSqlServer(connectionString));
 
@@ -40,6 +40,11 @@ namespace Hair_Salon_API
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ISalonService, SalonService>();
+            services.AddScoped<IBarberService, BarberService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IBookingService, BookingService>();
+            services.AddScoped<IServiceService, ServiceService>();
+            services.AddScoped<IServiceBarberService, ServiceBarberService>();
 
             services.AddAutoMapper(assemblies);
 

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace Hair_Salon_API.DAL.Repositories.Implementations
 {
-    public class AddressRepository: BaseRepository<Address>, IAddressRepository
+    public class ServiceBarberRepository: BaseRepository<ServiceBarber>, IServiceBarberRepository
     {
-        public AddressRepository(AppointmentsContext dbContext) : base(dbContext) { }
+        public ServiceBarberRepository(AppointmentsContext dbContext) : base(dbContext) { }
     }
 }

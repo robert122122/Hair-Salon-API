@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Hair_Salon_API.DAL.Models
 {
-    public partial class HairdresserContext : DbContext
+    public partial class AppointmentsContext : DbContext
     {
-        public HairdresserContext()
+        public AppointmentsContext()
         {
         }
 
-        public HairdresserContext(DbContextOptions<HairdresserContext> options)
+        public AppointmentsContext(DbContextOptions<AppointmentsContext> options)
             : base(options)
         {
         }
@@ -21,14 +21,13 @@ namespace Hair_Salon_API.DAL.Models
         public virtual DbSet<Booking> Bookings { get; set; } = null!;
         public virtual DbSet<Salon> Salons { get; set; } = null!;
         public virtual DbSet<Service> Services { get; set; } = null!;
+        public virtual DbSet<ServiceBarber> ServiceBarbers { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source = localhost; Initial Catalog = Hairdresser; TrustServerCertificate=True; Trusted_Connection=True;");
             }
         }
 
@@ -143,6 +142,31 @@ namespace Hair_Salon_API.DAL.Models
                     .HasForeignKey(d => d.SalonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Service_Salon");
+            });
+
+            modelBuilder.Entity<ServiceBarber>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("ServiceBarber");
+
+                entity.Property(e => e.DateAdded).HasColumnType("date");
+
+                entity.Property(e => e.DateUpdated).HasColumnType("date");
+
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.HasOne(d => d.Barber)
+                    .WithMany()
+                    .HasForeignKey(d => d.BarberId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ServiceBarber_Barber");
+
+                entity.HasOne(d => d.Service)
+                    .WithMany()
+                    .HasForeignKey(d => d.ServiceId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ServiceBarber_Service");
             });
 
             modelBuilder.Entity<User>(entity =>

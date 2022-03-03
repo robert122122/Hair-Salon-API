@@ -12,9 +12,9 @@ namespace Hair_Salon_API.DAL.Repositories.Implementations
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        protected HairdresserContext _dbContext { get; set; }
+        protected AppointmentsContext _dbContext { get; set; }
 
-        public BaseRepository(HairdresserContext dbContext)
+        public BaseRepository(AppointmentsContext dbContext)
         {
             _dbContext = dbContext;
         }

@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hair-Salon-API.DAL\Hair-Salon-API.DAL.csproj" />
+    <ProjectReference Include="..\Hair-Salon-API.DAL\Hair-Salon-API.DAL.csproj" />
   </ItemGroup>
 
 </Project>

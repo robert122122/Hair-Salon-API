@@ -11,7 +11,7 @@ namespace Hair_Salon_API.DAL.UnitOfWork
 {
     public class UnitOfWork:IUnitOfWork
     {
-        private readonly HairdresserContext _dbContext;
+        private readonly AppointmentsContext _dbContext;
 
         private IUserRepository _userRepository;
         private ISalonRepository _salonRepository;
@@ -19,8 +19,9 @@ namespace Hair_Salon_API.DAL.UnitOfWork
         private IAddressRepository _addressRepository;
         private IBarberRepository _barberRepository;
         private IBookingRepository _bookingRepository;
+        private IServiceBarberRepository _serviceBarberRepository;
 
-        public UnitOfWork(HairdresserContext dbContext)
+        public UnitOfWork(AppointmentsContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -31,6 +32,7 @@ namespace Hair_Salon_API.DAL.UnitOfWork
         public IAddressRepository AddressRepository => _addressRepository ??=new AddressRepository(_dbContext);
         public IBarberRepository BarberRepository => _barberRepository ??=new BarberRepository(_dbContext);
         public IBookingRepository BookingRepository => _bookingRepository ??=new BookingRepository(_dbContext);
+        public IServiceBarberRepository ServiceBarberRepository => _serviceBarberRepository ??= new ServiceBarberRepository(_dbContext);
 
         public void Commit()
         {
