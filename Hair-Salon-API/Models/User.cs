@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Hair_Salon_API.DAL.Models
+namespace Hair_Salon_API.Models
 {
     public partial class User
     {

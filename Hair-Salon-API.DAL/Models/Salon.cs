@@ -19,6 +19,7 @@ namespace Hair_Salon_API.DAL.Models
         public DateTime DateUpdated { get; set; }
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
+        public string? Image { get; set; }
 
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Barber> Barbers { get; set; }

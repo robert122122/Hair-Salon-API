@@ -1,20 +1,25 @@
-﻿using Hair_Salon_API.DAL.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hair_Salon_API.Models
 {
-    public class Salon
+    public partial class Salon
     {
+        public Salon()
+        {
+            Addresses = new HashSet<Address>();
+            Barbers = new HashSet<Barber>();
+            Bookings = new HashSet<Booking>();
+            Services = new HashSet<Service>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public DateTime DateAdded { get; set; }
         public DateTime DateUpdated { get; set; }
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
+        public string? Image { get; set; }
 
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Barber> Barbers { get; set; }

@@ -28,6 +28,8 @@ namespace Hair_Salon_API.DAL.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source = localhost; Initial Catalog = Appointments;TrustServerCertificate = True; Trusted_Connection=True;");
             }
         }
 
@@ -65,6 +67,8 @@ namespace Hair_Salon_API.DAL.Models
                 entity.Property(e => e.DateUpdated).HasColumnType("date");
 
                 entity.Property(e => e.FirstName).HasMaxLength(50);
+
+                entity.Property(e => e.Image).HasMaxLength(50);
 
                 entity.Property(e => e.LastName).HasMaxLength(50);
 
@@ -117,6 +121,8 @@ namespace Hair_Salon_API.DAL.Models
                 entity.Property(e => e.DateUpdated).HasColumnType("date");
 
                 entity.Property(e => e.Email).HasMaxLength(50);
+
+                entity.Property(e => e.Image).HasMaxLength(50);
 
                 entity.Property(e => e.Name).HasMaxLength(50);
 
@@ -180,6 +186,8 @@ namespace Hair_Salon_API.DAL.Models
                 entity.Property(e => e.Email).HasMaxLength(50);
 
                 entity.Property(e => e.FirstName).HasMaxLength(50);
+
+                entity.Property(e => e.Image).HasMaxLength(50);
 
                 entity.Property(e => e.LastName).HasMaxLength(50);
 
