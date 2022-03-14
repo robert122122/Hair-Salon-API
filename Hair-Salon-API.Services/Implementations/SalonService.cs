@@ -53,7 +53,7 @@ namespace Hair_Salon_API.Services.Implementations
             return _mapper.Map<Salon, SalonModel>(existingSalon);
         }
 
-        public async Task<SalonModel> GetSalonAsync(int salonId)
+        public async Task<SalonGetModel> GetSalonAsync(int salonId)
         {
             Salon existingSalon = await _unitOfWork.SalonRepository.FindByIdAsync(salonId);
 
@@ -62,12 +62,17 @@ namespace Hair_Salon_API.Services.Implementations
                 throw new Exception("Salon does not exist");
             }
 
-            return _mapper.Map<SalonModel>(existingSalon);
+            Address address = await _unitOfWork.AddressRepository.FindByIdAsync(existingSalon.AddressId);
+
+            SalonGetModel salon = _mapper.Map<SalonGetModel>(existingSalon);
+            salon.Address = address.City;
+
+            return salon;
         }
 
-        public async Task<IEnumerable<SalonModel>> GetSalonsAsync()
+        public async Task<IEnumerable<SalonGetModel>> GetSalonsAsync()
         {
-            return _mapper.Map<IEnumerable<SalonModel>>(await _unitOfWork.SalonRepository.FindAllAsync());
+            return _mapper.Map<IEnumerable<SalonGetModel>>(await _unitOfWork.SalonRepository.GetSalonsWithAddress());
         }
 
         public async Task<SalonModel> UpdateSalonAsync(int salonId, SalonModel salonToUpdate)

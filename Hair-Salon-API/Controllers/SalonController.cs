@@ -20,15 +20,15 @@ namespace Hair_Salon_API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<SalonDTO>> Get()
+        public async Task<IEnumerable<SalonGetDTO>> Get()
         {
-            return _mapper.Map<IEnumerable<SalonDTO>>(await _salonService.GetSalonsAsync());
+            return _mapper.Map<IEnumerable<SalonGetDTO>>(await _salonService.GetSalonsAsync());
         }
 
         [HttpGet("{salonId}")]
-        public async Task<SalonDTO> Get(int salonId)
+        public async Task<SalonGetDTO> Get(int salonId)
         {
-            return _mapper.Map<SalonDTO>(await _salonService.GetSalonAsync(salonId));
+            return _mapper.Map<SalonGetDTO>(await _salonService.GetSalonAsync(salonId));
         }
 
         [HttpPost]

@@ -14,6 +14,5 @@ namespace Hair_Salon_API.Models
         public string City { get; set; } = null!;
         public string Street { get; set; } = null!;
         public string Number { get; set; } = null!;
-        public int SalonId { get; set; }
     }
 }

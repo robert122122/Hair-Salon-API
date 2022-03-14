@@ -74,7 +74,6 @@ namespace Hair_Salon_API.Services.Implementations
             }
 
             updatedAddress.Id = existingAddress.Id;
-            updatedAddress.SalonId = existingAddress.SalonId;
             updatedAddress.DateAdded = existingAddress.DateAdded;
             updatedAddress.DateUpdated = DateTime.Now;
 

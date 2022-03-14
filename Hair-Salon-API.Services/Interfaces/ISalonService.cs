@@ -13,9 +13,9 @@ namespace Hair_Salon_API.Services.Interfaces
 
         Task<SalonModel> DeleteSalonAsync(int salonId);
 
-        Task<SalonModel> GetSalonAsync(int salonId);
+        Task<SalonGetModel> GetSalonAsync(int salonId);
 
-        Task<IEnumerable<SalonModel>> GetSalonsAsync();
+        Task<IEnumerable<SalonGetModel>> GetSalonsAsync();
 
         Task<SalonModel> UpdateSalonAsync(int salonId, SalonModel salonToUpdate);
     }
