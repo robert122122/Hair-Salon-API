@@ -20,6 +20,7 @@ namespace Hair_Salon_API.DAL.UnitOfWork
         private IBarberRepository _barberRepository;
         private IBookingRepository _bookingRepository;
         private IServiceBarberRepository _serviceBarberRepository;
+        private IReviewRepository _reviewRepository;
 
         public UnitOfWork(AppointmentsContext dbContext)
         {
@@ -33,7 +34,7 @@ namespace Hair_Salon_API.DAL.UnitOfWork
         public IBarberRepository BarberRepository => _barberRepository ??=new BarberRepository(_dbContext);
         public IBookingRepository BookingRepository => _bookingRepository ??=new BookingRepository(_dbContext);
         public IServiceBarberRepository ServiceBarberRepository => _serviceBarberRepository ??= new ServiceBarberRepository(_dbContext);
-
+        public IReviewRepository ReviewRepository => _reviewRepository ??= new ReviewRepository(_dbContext);
         public void Commit()
         {
             _dbContext.SaveChanges();

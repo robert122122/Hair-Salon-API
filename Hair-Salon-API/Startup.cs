@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.OpenApi.Models;
 using Hair_Salon_API.Services.Models;
+using Hair_Review_API.Services.Implementations;
 
 namespace Hair_Salon_API
 {
@@ -46,6 +47,7 @@ namespace Hair_Salon_API
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IServiceService, ServiceService>();
             services.AddScoped<IServiceBarberService, ServiceBarberService>();
+            services.AddScoped<IReviewService, ReviewService>();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, MailService>();
 

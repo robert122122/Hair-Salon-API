@@ -9,6 +9,7 @@ namespace Hair_Salon_API.DAL.Models
         {
             Barbers = new HashSet<Barber>();
             Bookings = new HashSet<Booking>();
+            Reviews = new HashSet<Review>();
             Services = new HashSet<Service>();
         }
 
@@ -24,6 +25,7 @@ namespace Hair_Salon_API.DAL.Models
         public virtual Address Address { get; set; } = null!;
         public virtual ICollection<Barber> Barbers { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<Service> Services { get; set; }
     }
 }

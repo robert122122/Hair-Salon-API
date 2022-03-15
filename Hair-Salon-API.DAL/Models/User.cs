@@ -8,6 +8,7 @@ namespace Hair_Salon_API.DAL.Models
         public User()
         {
             Bookings = new HashSet<Booking>();
+            Reviews = new HashSet<Review>();
         }
 
         public int Id { get; set; }
@@ -21,5 +22,6 @@ namespace Hair_Salon_API.DAL.Models
         public string? Image { get; set; }
 
         public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

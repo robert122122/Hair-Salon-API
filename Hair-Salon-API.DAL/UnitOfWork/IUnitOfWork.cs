@@ -16,6 +16,7 @@ namespace Hair_Salon_API.DAL.UnitOfWork
         IServiceRepository ServiceRepository { get; }
         ISalonRepository SalonRepository { get; }
         IServiceBarberRepository ServiceBarberRepository { get; }
+        IReviewRepository ReviewRepository { get; }
 
         void Commit();
         Task CommitAsync();
