@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 
 namespace Hair_Salon_API.Services.Models
 {

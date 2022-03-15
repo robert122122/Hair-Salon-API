@@ -1,6 +1,4 @@
 ﻿using Hair_Salon_API.DAL.Models;
-using System;
-using System.Collections.Generic;
 
 namespace Hair_Salon_API.Models
 {

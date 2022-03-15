@@ -85,7 +85,9 @@ namespace Hair_Salon_API.Services.Implementations
                 throw new Exception("Services not found.");
             }
 
-            return _mapper.Map<IEnumerable<ServiceModel>>(services);
+            IEnumerable<Service> bla = services.OrderBy(x => x.Cost).ToList();
+
+            return _mapper.Map<IEnumerable<ServiceModel>>(bla);
         }
 
         public async Task<ServiceModel> UpdateServiceAsync(int serviceId, ServiceModel serviceToUpdate)

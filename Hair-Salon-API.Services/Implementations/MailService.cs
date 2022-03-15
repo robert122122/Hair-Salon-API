@@ -1,16 +1,9 @@
-﻿
-using AutoMapper;
-using Hair_Salon_API.Services.Interfaces;
+﻿using Hair_Salon_API.Services.Interfaces;
 using Hair_Salon_API.Services.Models;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hair_Salon_API.Services.Implementations
 {
