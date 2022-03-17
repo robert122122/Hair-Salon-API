@@ -10,7 +10,7 @@ namespace Hair_Salon_API.Services.Profiles
         {
             CreateMap<Salon, SalonModel>().ReverseMap();
             CreateMap<Salon, SalonGetModel>()
-            .ForMember(address => address.Address, opt => opt.MapFrom(b => b.Address.City))
+            .ForMember(address => address.Address, opt => opt.MapFrom(b => b.Address))
             .ReverseMap();
         }
 

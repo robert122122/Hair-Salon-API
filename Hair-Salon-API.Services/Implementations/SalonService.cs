@@ -11,11 +11,13 @@ namespace Hair_Salon_API.Services.Implementations
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IReviewService _reviewService;
 
-        public SalonService(IUnitOfWork unitOfWork, IMapper mapper)
+        public SalonService(IUnitOfWork unitOfWork, IMapper mapper, IReviewService reviewService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _reviewService = reviewService;
         }
 
         public async Task<SalonModel> AddSalonAsync(SalonModel salonToAdd)
@@ -57,17 +59,57 @@ namespace Hair_Salon_API.Services.Implementations
                 throw new Exception("Salon does not exist");
             }
 
+            IEnumerable<ReviewModel> salonReviews = await _reviewService.GetReviewsBySalonAsync(salonId);
+
             Address address = await _unitOfWork.AddressRepository.FindByIdAsync(existingSalon.AddressId);
 
             SalonGetModel salon = _mapper.Map<SalonGetModel>(existingSalon);
-            salon.Address = address.City;
+
+            if (salonReviews == null)
+            {
+                salon.Rating = 0;
+            }
+
+            else
+            {
+                decimal totalRating = 0;
+                foreach(var review in salonReviews)
+                {
+                    totalRating += review.Rating;
+                }
+                salon.Rating = totalRating/salonReviews.Count();
+            }
+
 
             return salon;
         }
 
         public async Task<IEnumerable<SalonGetModel>> GetSalonsAsync()
         {
-            return _mapper.Map<IEnumerable<SalonGetModel>>(await _unitOfWork.SalonRepository.GetSalonsWithAddress());
+
+            IEnumerable<SalonGetModel> salons = _mapper.Map<IEnumerable<SalonGetModel>>(await _unitOfWork.SalonRepository.GetSalonsWithAddress());
+
+            foreach(SalonGetModel salon in salons)
+            {
+                IEnumerable<ReviewModel> salonReviews = await _reviewService.GetReviewsBySalonAsync(salon.Id);
+
+                if (salonReviews == null)
+                {
+                    salon.Rating = 0;
+                }
+
+                else
+                {
+                    decimal totalRating = 0;
+                    foreach (var review in salonReviews)
+                    {
+                        totalRating += review.Rating;
+                    }
+                    salon.Rating = totalRating / salonReviews.Count();
+                }
+            }
+
+            return salons;
         }
 
         public async Task<SalonModel> UpdateSalonAsync(int salonId, SalonModel salonToUpdate)

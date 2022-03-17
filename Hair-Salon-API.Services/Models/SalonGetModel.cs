@@ -1,4 +1,6 @@
 ﻿
+using Hair_Salon_API.DAL.Models;
+
 namespace Hair_Salon_API.Services.Models
 {
     public class SalonGetModel
@@ -8,7 +10,9 @@ namespace Hair_Salon_API.Services.Models
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public string? Image { get; set; }
-        public string Address { get; set; }
+
+        public AddressModel Address { get; set; }
+        public decimal? Rating { get; set; }
 
         public DateTime DateAdded { get; set; }
         public DateTime DateUpdated { get; set; }

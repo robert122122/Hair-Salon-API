@@ -10,6 +10,5 @@ namespace Hair_Salon_API.Services.Models
         public string Number { get; set; } = null!;
         public DateTime DateAdded { get; set; }
         public DateTime DateUpdated { get; set; }
-        public int SalonId { get; set; }
     }
 }
