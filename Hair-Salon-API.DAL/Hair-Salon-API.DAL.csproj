@@ -20,4 +20,8 @@
     <Folder Include="Models\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Hair-Salon-API.Common\Hair-Salon-API.Common.csproj" />
+  </ItemGroup>
+
 </Project>

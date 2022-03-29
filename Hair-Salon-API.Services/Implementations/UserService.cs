@@ -1,8 +1,16 @@
 ﻿using AutoMapper;
 using Hair_Salon_API.DAL.Models;
 using Hair_Salon_API.DAL.UnitOfWork;
+using Hair_Salon_API.Services.Helpers;
 using Hair_Salon_API.Services.Interfaces;
 using Hair_Salon_API.Services.Models;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Hair_Salon_API.Common.Interfaces;
+
 
 namespace Hair_Salon_API.Services.Implementations
 {
@@ -10,11 +18,15 @@ namespace Hair_Salon_API.Services.Implementations
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly AppSettings _appSettings;
+        private readonly IEncryptService _encryptService;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper, IOptions<AppSettings> appSettings, IEncryptService encryptService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _appSettings = appSettings.Value;
+            _encryptService = encryptService;
         }
 
         public async Task<UserModel> AddUserAsync(UserModel userToAdd)
@@ -30,6 +42,7 @@ namespace Hair_Salon_API.Services.Implementations
 
             newUser.DateAdded = DateTime.Now;
             newUser.DateUpdated = DateTime.Now;
+            newUser.Password = _encryptService.Encrypt(userToAdd.Password);
 
             _unitOfWork.UserRepository.Add(newUser);
 
@@ -83,6 +96,7 @@ namespace Hair_Salon_API.Services.Implementations
             userToUpdate.Id = existingUser.Id;
             userToUpdate.DateAdded = existingUser.DateAdded;
             userToUpdate.DateUpdated = DateTime.Now;
+            userToUpdate.Password = _encryptService.Encrypt(userToUpdate.Password);
 
             _mapper.Map(userToUpdate, existingUser);
 
@@ -91,6 +105,37 @@ namespace Hair_Salon_API.Services.Implementations
             await _unitOfWork.CommitAsync();
 
             return _mapper.Map<User, UserModel>(existingUser);
+        }
+
+        public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
+        {
+            User existingUser = (await _unitOfWork.UserRepository.FindAsync(x => x.Email == model.Email)).FirstOrDefault();
+            string encryptedPassword = _encryptService.Encrypt(model.Password);
+
+            if (existingUser == null || existingUser.Password != encryptedPassword)
+            {
+                return null;
+            }
+
+            UserModel mappedExistingUser = _mapper.Map<UserModel>(existingUser);
+            string token = generateJwtToken(mappedExistingUser);
+
+            return new AuthenticateResponse(mappedExistingUser, token);
+        }
+
+        public string generateJwtToken(UserModel user)
+        {
+            byte[] key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
         }
     }
 }

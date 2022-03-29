@@ -4,6 +4,8 @@ namespace Hair_Salon_API.Services.Interfaces
 {
     public interface IUserService
     {
+        Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
+
         Task<UserModel> AddUserAsync(UserModel userToAdd);
 
         Task<UserModel> DeleteUserAsync(int userId);

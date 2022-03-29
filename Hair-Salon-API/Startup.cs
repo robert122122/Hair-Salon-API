@@ -7,6 +7,10 @@ using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Hair_Salon_API.Services.Models;
 using Hair_Review_API.Services.Implementations;
+using Hair_Salon_API.Middleware;
+using Hair_Salon_API.Services.Helpers;
+using Hair_Salon_API.Common.Implementations;
+using Hair_Salon_API.Common.Interfaces;
 
 namespace Hair_Salon_API
 {
@@ -46,10 +50,18 @@ namespace Hair_Salon_API
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, MailService>();
 
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            services.AddTransient<Services.Interfaces.IMailService, Services.Implementations.MailService>();
+
+            services.AddScoped<IEncryptService, EncryptService>();
+
             services.AddAutoMapper(assemblies);
 
             services.AddCors();
-            services.AddControllers();
+
+            services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cinema", Version = "v1" });
@@ -97,6 +109,13 @@ namespace Hair_Salon_API
                                           .AllowAnyHeader()
                                           .AllowCredentials()
                                           .SetIsOriginAllowed(origin => true));
+
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseHttpsRedirection();
 

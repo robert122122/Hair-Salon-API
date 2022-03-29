@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Hair_Salon_API.DAL.Models
 {
     public partial class Address
