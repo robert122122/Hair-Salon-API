@@ -93,7 +93,7 @@ namespace Hair_Salon_API.Services.Implementations
             {
                 IEnumerable<ReviewModel> salonReviews = await _reviewService.GetReviewsBySalonAsync(salon.Id);
 
-                if (salonReviews == null)
+                if (salonReviews.Count() < 1)
                 {
                     salon.Rating = 0;
                 }
