@@ -61,11 +61,9 @@ namespace Hair_Salon_API.Services.Implementations
 
             IEnumerable<ReviewModel> salonReviews = await _reviewService.GetReviewsBySalonAsync(salonId);
 
-            Address address = await _unitOfWork.AddressRepository.FindByIdAsync(existingSalon.AddressId);
-
             SalonGetModel salon = _mapper.Map<SalonGetModel>(existingSalon);
 
-            if (salonReviews == null)
+            if (salonReviews.Count() < 1)
             {
                 salon.Rating = 0;
             }
