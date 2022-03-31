@@ -14,6 +14,9 @@ namespace Hair_Salon_API.Services.Models
         public AddressModel Address { get; set; }
         public decimal? Rating { get; set; }
 
+        public string Description { get; set; } = null!;
+        public string? Logo { get; set; }
+
         public DateTime DateAdded { get; set; }
         public DateTime DateUpdated { get; set; }
     }

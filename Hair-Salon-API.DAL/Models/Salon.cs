@@ -21,6 +21,8 @@ namespace Hair_Salon_API.DAL.Models
         public string PhoneNumber { get; set; } = null!;
         public string? Image { get; set; }
         public int AddressId { get; set; }
+        public string? Description { get; set; }
+        public string? Logo { get; set; }
 
         public virtual Address Address { get; set; } = null!;
         public virtual ICollection<Barber> Barbers { get; set; }

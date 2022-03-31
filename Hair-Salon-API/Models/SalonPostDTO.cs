@@ -8,5 +8,7 @@ namespace Hair_Salon_API.Models
         public string PhoneNumber { get; set; } = null!;
         public string? Image { get; set; }
         public int AddressId { get; set; }
+        public string Description { get; set; } = null!;
+        public string? Logo { get; set; }
     }
 }
