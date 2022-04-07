@@ -76,9 +76,9 @@ namespace Hair_Salon_API.DAL.Models
             {
                 entity.ToTable("Booking");
 
-                entity.Property(e => e.BookingChanged).HasColumnType("date");
+                entity.Property(e => e.BookingChanged).HasColumnType("datetime");
 
-                entity.Property(e => e.BookingDate).HasColumnType("date");
+                entity.Property(e => e.BookingDate).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Barber)
                     .WithMany(p => p.Bookings)
