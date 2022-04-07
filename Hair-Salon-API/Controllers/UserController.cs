@@ -2,6 +2,7 @@
 using Hair_Salon_API.Models;
 using Hair_Salon_API.Services.Interfaces;
 using Hair_Salon_API.Services.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hair_Salon_API.Controllers
@@ -19,6 +20,20 @@ namespace Hair_Salon_API.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate(AuthenticateRequest model)
+        {
+            AuthenticateResponse response = await _userService.Authenticate(model);
+
+            if (response == null)
+            {
+                return BadRequest(new { message = "Username or password is incorrect." });
+            }
+
+            return Ok(response);
+        }
+
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<UserDTO>> Get()
         {
