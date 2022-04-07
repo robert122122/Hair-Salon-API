@@ -75,9 +75,8 @@ namespace Hair_Salon_API.Services.Implementations
                 {
                     totalRating += review.Rating;
                 }
-                salon.Rating = totalRating/salonReviews.Count();
+                salon.Rating = Math.Round(totalRating / salonReviews.Count(), 2);
             }
-
 
             return salon;
         }
@@ -103,7 +102,7 @@ namespace Hair_Salon_API.Services.Implementations
                     {
                         totalRating += review.Rating;
                     }
-                    salon.Rating = totalRating / salonReviews.Count();
+                    salon.Rating = Math.Round(totalRating / salonReviews.Count(), 2);
                 }
             }
 
