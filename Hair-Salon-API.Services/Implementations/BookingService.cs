@@ -31,7 +31,7 @@ namespace Hair_Salon_API.Services.Implementations
                 throw new Exception("Service doesnt exists!");
             }
 
-            Barber existingBarber = await _unitOfWork.BarberRepository.FindByIdAsync(bookingToAdd.ServiceId);
+            Barber existingBarber = await _unitOfWork.BarberRepository.FindByIdAsync(bookingToAdd.BarberId);
             if (existingBarber == null)
             {
                 throw new Exception("Barber doesnt exists!");
