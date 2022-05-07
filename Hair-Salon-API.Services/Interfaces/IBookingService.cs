@@ -8,10 +8,10 @@ namespace Hair_Salon_API.Services.Interfaces
 
         Task<BookingModel> DeleteBookingAsync(int bookingId);
 
-        Task<BookingModel> GetBookingAsync(int bookingId);
+        Task<BookingGetModel> GetBookingAsync(int bookingId);
 
-        Task<IEnumerable<BookingModel>> GetBookingsAsync();
-        Task<IEnumerable<BookingModel>> GetBookingsByUserAsync(int userId);
+        Task<IEnumerable<BookingGetModel>> GetBookingsAsync();
+        Task<IEnumerable<BookingGetModel>> GetBookingsByUserAsync(int userId);
 
         Task<BookingModel> UpdateBookingAsync(int bookingId, BookingModel bookingToUpdate);
     }

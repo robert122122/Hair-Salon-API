@@ -4,5 +4,6 @@ namespace Hair_Salon_API.DAL.Repositories.Interfaces
 {
     public interface IBookingRepository : IBaseRepository<Booking>
     {
+        Task<IEnumerable<Booking>> GetBookingsWithDetails();
     }
 }

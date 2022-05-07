@@ -11,6 +11,7 @@ namespace Hair_Salon_API.Profiles
             CreateMap<BookingModel, BookingDTO>().ReverseMap();
             CreateMap<BookingModel, BookingPostDTO>().ReverseMap();
             CreateMap<BookingModel, BookingPutDTO>().ReverseMap();
+            CreateMap<BookingGetModel, BookingGetDTO>().ReverseMap();
         }
     }
 }

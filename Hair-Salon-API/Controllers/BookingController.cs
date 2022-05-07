@@ -20,21 +20,21 @@ namespace Hair_Salon_API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<BookingDTO>> Get()
+        public async Task<IEnumerable<BookingGetDTO>> Get()
         {
-            return _mapper.Map<IEnumerable<BookingDTO>>(await _bookingService.GetBookingsAsync());
+            return _mapper.Map<IEnumerable<BookingGetDTO>>(await _bookingService.GetBookingsAsync());
         }
 
         [HttpGet("User/{userId}")]
-        public async Task<IEnumerable<BookingDTO>> GetBookingsByUser(int userId)
+        public async Task<IEnumerable<BookingGetDTO>> GetBookingsByUser(int userId)
         {
-            return _mapper.Map<IEnumerable<BookingDTO>>(await _bookingService.GetBookingsByUserAsync(userId));
+            return _mapper.Map<IEnumerable<BookingGetDTO>>(await _bookingService.GetBookingsByUserAsync(userId));
         }
 
         [HttpGet("{bookingId}")]
-        public async Task<BookingDTO> Get(int bookingId)
+        public async Task<BookingGetDTO> Get(int bookingId)
         {
-            return _mapper.Map<BookingDTO>(await _bookingService.GetBookingAsync(bookingId));
+            return _mapper.Map<BookingGetDTO>(await _bookingService.GetBookingAsync(bookingId));
         }
 
         [HttpPost]
