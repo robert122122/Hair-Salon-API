@@ -40,7 +40,7 @@ namespace Hair_Salon_API.Controllers
             return _mapper.Map<IEnumerable<UserDTO>>(await _userService.GetUsersAsync());
         }
 
-        [HttpGet("{userId}")]
+        [HttpGet("{userId}"),Authorize]
         public async Task<UserDTO> Get(int userId)
         {
             return _mapper.Map<UserDTO>(await _userService.GetUserAsync(userId));

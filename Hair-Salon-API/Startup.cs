@@ -121,6 +121,9 @@ namespace Hair_Salon_API
 
             app.UseRouting();
 
+            app.UseCors("EnableCORS");
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
