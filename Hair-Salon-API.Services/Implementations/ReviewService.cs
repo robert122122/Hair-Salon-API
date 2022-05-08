@@ -64,7 +64,7 @@ namespace Hair_Review_API.Services.Implementations
             return _mapper.Map<IEnumerable<ReviewModel>>(await _unitOfWork.ReviewRepository.FindAllAsync());
         }
 
-        public async Task<IEnumerable<ReviewModel>> GetReviewsBySalonAsync(int salonId)
+        public async Task<IEnumerable<ReviewGetModel>> GetReviewsBySalonAsync(int salonId)
         {
             Salon existingSalon = await _unitOfWork.SalonRepository.FindByIdAsync(salonId);
             if (existingSalon == null)
@@ -72,14 +72,23 @@ namespace Hair_Review_API.Services.Implementations
                 throw new Exception("Salon does not exists!");
             }
 
-            IEnumerable<Review> reviews = await _unitOfWork.ReviewRepository.FindAsync(review => review.SalonId == salonId);
+            IEnumerable<ReviewGetModel> reviews = _mapper.Map<IEnumerable<ReviewGetModel>> (await _unitOfWork.ReviewRepository.FindAsync(review => review.SalonId == salonId));
 
             if (reviews == null)
             {
                 throw new Exception("Reviews not found.");
             }
 
-            return _mapper.Map<IEnumerable<ReviewModel>>(reviews);
+            foreach(ReviewGetModel review in reviews)
+            {
+                Review existingReview = await _unitOfWork.ReviewRepository.FindByIdAsync (review.Id);
+
+                User user = await _unitOfWork.UserRepository.FindByIdAsync(existingReview.UserId);
+
+                review.UserName = user.FirstName + " " + user.LastName;
+            }
+
+            return reviews;
         }
 
         public async Task<IEnumerable<ReviewModel>> GetReviewsByUserAsync(int userId)

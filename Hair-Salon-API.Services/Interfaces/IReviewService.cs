@@ -13,7 +13,7 @@ namespace Hair_Salon_API.Services.Interfaces
         Task<IEnumerable<ReviewModel>> GetReviewsAsync();
         Task<IEnumerable<ReviewModel>> GetReviewsByUserAsync(int userId);
 
-        Task<IEnumerable<ReviewModel>> GetReviewsBySalonAsync(int salonId);
+        Task<IEnumerable<ReviewGetModel>> GetReviewsBySalonAsync(int salonId);
 
         Task<ReviewModel> UpdateReviewAsync(int reviewId, ReviewModel reviewToUpdate);
     }

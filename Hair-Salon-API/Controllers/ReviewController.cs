@@ -26,9 +26,9 @@ namespace Hair_Salon_API.Controllers
         }
 
         [HttpGet("Salon/{salonId}")]
-        public async Task<IEnumerable<ReviewDTO>> GetReviewsBySalon(int salonId)
+        public async Task<IEnumerable<ReviewGetDTO>> GetReviewsBySalon(int salonId)
         {
-            return _mapper.Map<IEnumerable<ReviewDTO>>(await _reviewService.GetReviewsBySalonAsync(salonId));
+            return _mapper.Map<IEnumerable<ReviewGetDTO>>(await _reviewService.GetReviewsBySalonAsync(salonId));
         }
 
         [HttpGet("User/{userId}")]

@@ -10,6 +10,8 @@ namespace Hair_Salon_API.Profiles
         {
             CreateMap<ReviewModel, ReviewDTO>().ReverseMap();
             CreateMap<ReviewModel, ReviewPostDTO>().ReverseMap();
+            CreateMap<ReviewGetModel, ReviewGetDTO>().ReverseMap();
+
         }
 
     }

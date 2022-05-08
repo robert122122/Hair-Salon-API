@@ -59,7 +59,7 @@ namespace Hair_Salon_API.Services.Implementations
                 throw new Exception("Salon does not exist");
             }
 
-            IEnumerable<ReviewModel> salonReviews = await _reviewService.GetReviewsBySalonAsync(salonId);
+            IEnumerable<ReviewGetModel> salonReviews = await _reviewService.GetReviewsBySalonAsync(salonId);
 
             SalonGetModel salon = _mapper.Map<SalonGetModel>(existingSalon);
 
@@ -88,7 +88,7 @@ namespace Hair_Salon_API.Services.Implementations
 
             foreach(SalonGetModel salon in salons)
             {
-                IEnumerable<ReviewModel> salonReviews = await _reviewService.GetReviewsBySalonAsync(salon.Id);
+                IEnumerable<ReviewGetModel> salonReviews = await _reviewService.GetReviewsBySalonAsync(salon.Id);
 
                 if (salonReviews.Count() < 1)
                 {
