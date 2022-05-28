@@ -96,7 +96,7 @@ namespace Hair_Salon_API.Services.Implementations
             userToUpdate.Id = existingUser.Id;
             userToUpdate.DateAdded = existingUser.DateAdded;
             userToUpdate.DateUpdated = DateTime.Now;
-            userToUpdate.Password = _encryptService.Encrypt(userToUpdate.Password);
+            userToUpdate.Password = existingUser.Password;
 
             _mapper.Map(userToUpdate, existingUser);
 
@@ -107,7 +107,7 @@ namespace Hair_Salon_API.Services.Implementations
             return _mapper.Map<User, UserModel>(existingUser);
         }
 
-        public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
+        public async Task<UserModel> Authenticate(AuthenticateRequest model)
         {
             User existingUser = (await _unitOfWork.UserRepository.FindAsync(x => x.Email == model.Email)).FirstOrDefault();
             string encryptedPassword = _encryptService.Encrypt(model.Password);
@@ -118,9 +118,9 @@ namespace Hair_Salon_API.Services.Implementations
             }
 
             UserModel mappedExistingUser = _mapper.Map<UserModel>(existingUser);
-            string token = generateJwtToken(mappedExistingUser);
-
-            return new AuthenticateResponse(mappedExistingUser, token);
+/*            string token = generateJwtToken(mappedExistingUser);
+*/
+            return mappedExistingUser;
         }
 
         public string generateJwtToken(UserModel user)

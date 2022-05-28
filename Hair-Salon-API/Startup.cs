@@ -7,10 +7,12 @@ using System.Reflection;
 using Microsoft.OpenApi.Models;
 using Hair_Salon_API.Services.Models;
 using Hair_Review_API.Services.Implementations;
-using Hair_Salon_API.Middleware;
 using Hair_Salon_API.Services.Helpers;
 using Hair_Salon_API.Common.Implementations;
 using Hair_Salon_API.Common.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Hair_Salon_API
 {
@@ -38,6 +40,16 @@ namespace Hair_Salon_API
                 Assembly.Load("Hair-Salon-API")
             };
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EnableCORS", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
+            });
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAddressService, AddressService>();
             services.AddScoped<ISalonService, SalonService>();
@@ -58,42 +70,70 @@ namespace Hair_Salon_API
 
             services.AddAutoMapper(assemblies);
 
-            services.AddCors();
-
-            services.AddControllers().AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-            services.AddSwaggerGen(c =>
+            services.AddAuthentication(opt =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cinema", Version = "v1" });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(options =>
                 {
-                    Description = @"JWT Authorization header using the Bearer scheme. \n 
-                      Enter 'Bearer' [space] and then your token in the text input below. \n
-                      Example: 'Bearer 12345abcdef'",
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
-                    Type = SecuritySchemeType.ApiKey,
-                    Scheme = "Bearer"
-                });
-
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                {
+                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
-                            },
-                            Scheme = "oauth2",
-                            Name = "Bearer",
-                            In = ParameterLocation.Header,
-                        },
-                        new List<string>()
-                    }
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+
+                        ValidIssuer = "https://localhost:4200",
+                        ValidAudience = "https://localhost:4200",
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+                    };
+
+                });
+               
+
+            services.AddControllers();
+
+            services.AddSwaggerGen(c => { //<-- NOTE 'Add' instead of 'Configure'
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Hair-Appointments",
+                    Version = "v1"
                 });
             });
+
+            /*            services.AddSwaggerGen(c =>
+                        {
+                            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Cinema", Version = "v1" });
+                            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                            {
+                                Description = @"JWT Authorization header using the Bearer scheme. \n 
+                                  Enter 'Bearer' [space] and then your token in the text input below. \n
+                                  Example: 'Bearer 12345abcdef'",
+                                Name = "Authorization",
+                                In = ParameterLocation.Header,
+                                Type = SecuritySchemeType.ApiKey,
+                                Scheme = "Bearer"
+                            });
+
+                            c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                            {
+                                {
+                                    new OpenApiSecurityScheme
+                                    {
+                                        Reference = new OpenApiReference
+                                        {
+                                            Type = ReferenceType.SecurityScheme,
+                                            Id = "Bearer"
+                                        },
+                                        Scheme = "oauth2",
+                                        Name = "Bearer",
+                                        In = ParameterLocation.Header,
+                                    },
+                                    new List<string>()
+                                }
+                            });
+                        });*/
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -104,18 +144,6 @@ namespace Hair_Salon_API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cinema v1"));
             }
-
-            app.UseCors(options => options.AllowAnyMethod()
-                                          .AllowAnyHeader()
-                                          .AllowCredentials()
-                                          .SetIsOriginAllowed(origin => true));
-
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
-
-            app.UseMiddleware<JwtMiddleware>();
 
             app.UseHttpsRedirection();
 

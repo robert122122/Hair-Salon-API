@@ -10,6 +10,7 @@ namespace Hair_Salon_API.Profiles
         {
             CreateMap<UserModel, UserDTO>().ReverseMap();
             CreateMap<UserModel, UserPostDTO>().ReverseMap();
+            CreateMap<UserModel, UserPutDTO>().ReverseMap();
         }
     }
 }

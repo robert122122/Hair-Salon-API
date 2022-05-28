@@ -20,7 +20,7 @@ namespace Hair_Salon_API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("authenticate")]
+/*        [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(AuthenticateRequest model)
         {
             AuthenticateResponse response = await _userService.Authenticate(model);
@@ -31,10 +31,10 @@ namespace Hair_Salon_API.Controllers
             }
 
             return Ok(response);
-        }
+        }*/
 
-        [Authorize]
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<UserDTO>> Get()
         {
             return _mapper.Map<IEnumerable<UserDTO>>(await _userService.GetUsersAsync());
@@ -53,7 +53,7 @@ namespace Hair_Salon_API.Controllers
         }
 
         [HttpPut("{userId}")]
-        public async Task<UserDTO> Put(int userId, UserPostDTO userToUpdate)
+        public async Task<UserDTO> Put(int userId, UserPutDTO userToUpdate)
         {
             return _mapper.Map<UserDTO>(await _userService.UpdateUserAsync(userId, _mapper.Map<UserModel>(userToUpdate)));
         }
