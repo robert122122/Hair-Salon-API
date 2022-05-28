@@ -13,6 +13,8 @@ using Hair_Salon_API.Common.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.FileProviders;
 
 namespace Hair_Salon_API
 {
@@ -90,7 +92,13 @@ namespace Hair_Salon_API
                     };
 
                 });
-               
+            services.Configure<FormOptions>(o =>
+            {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
+            });
+
 
             services.AddControllers();
 
@@ -150,6 +158,13 @@ namespace Hair_Salon_API
             app.UseRouting();
 
             app.UseCors("EnableCORS");
+
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             app.UseAuthentication();
             app.UseAuthorization();

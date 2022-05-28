@@ -36,4 +36,8 @@
     <ProjectReference Include="..\Hair-Salon-API.Services\Hair-Salon-API.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Resources\Images\" />
+  </ItemGroup>
+
 </Project>
