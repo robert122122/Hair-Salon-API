@@ -16,38 +16,81 @@ namespace Hair_Salon_API.Controllers
     public class AuthController:ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly ISalonService _salonService;
         private readonly IMapper _mapper;
 
-        public AuthController(IUserService userService, IMapper mapper)
+        public AuthController(IUserService userService, IMapper mapper, ISalonService salonService)
         {
             _userService = userService;
+            _salonService = salonService;
             _mapper = mapper;
         }
 
         [HttpPost, Route("login")]
-        public async Task<IActionResult> Login([FromBody] AuthenticateRequest user)
+        public async Task<IActionResult> Login([FromBody] AuthenticateRequest user, string role)
         {
+
             if (user == null)
                 return BadRequest("Invalid Client Request");
 
-            UserModel response = await _userService.Authenticate(user);
-
-            if (response != null)
+            if(role == "User")
             {
-                var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
-                var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+                var response = await _userService.Authenticate(user);
 
-                var tokenOptions = new JwtSecurityToken(
-                    issuer: "https://localhost:4200",
-                    audience: "https://localhost:4200",
-                    claims: new List<Claim>(),
-                    expires: DateTime.Now.AddMinutes(30),
-                    signingCredentials: signingCredentials
-                    );
+                if (response != null)
+                {
+                    var claims = new List<Claim>
+                {
+                     new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Role, role)
+                };
 
-                var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
-                return Ok(new AuthenticateResponse(response, tokenString));
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+                    var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+                    var tokenOptions = new JwtSecurityToken(
+                        issuer: "https://localhost:4200",
+                        audience: "https://localhost:4200",
+                        claims: claims,
+                        expires: DateTime.Now.AddMinutes(30),
+                        signingCredentials: signingCredentials
+                        );
+
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+                    return Ok(new AuthenticateResponse(response, tokenString));
+                }
             }
+
+            else if(role == "Salon")
+            {
+                var response = await _salonService.Authenticate(user);
+
+                if (response != null)
+                {
+                    var claims = new List<Claim>
+                {
+                     new Claim(ClaimTypes.Name, user.Email),
+                    new Claim(ClaimTypes.Role, role)
+                };
+
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+                    var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+                    var tokenOptions = new JwtSecurityToken(
+                        issuer: "https://localhost:4200",
+                        audience: "https://localhost:4200",
+                        claims: claims,
+                        expires: DateTime.Now.AddMinutes(30),
+                        signingCredentials: signingCredentials
+                        );
+
+                    var tokenString = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+                    return Ok(new SalonAuthenticateResponse(response, tokenString));
+                }
+            }
+
+
+
 
             return Unauthorized();
         }

@@ -20,11 +20,12 @@ namespace Hair_Salon_API.DAL.Models
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
         public string? Image { get; set; }
-        public int AddressId { get; set; }
+        public int? AddressId { get; set; }
         public string? Description { get; set; }
         public string? Logo { get; set; }
+        public string? Password { get; set; }
 
-        public virtual Address Address { get; set; } = null!;
+        public virtual Address? Address { get; set; }
         public virtual ICollection<Barber> Barbers { get; set; }
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }

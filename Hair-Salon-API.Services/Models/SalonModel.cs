@@ -14,5 +14,7 @@ namespace Hair_Salon_API.Services.Models
 
         public string Description { get; set; } = null!;
         public string? Logo { get; set; }
+
+        public string Password { get; set; }
     }
 }

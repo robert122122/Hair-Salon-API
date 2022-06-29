@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Hair_Salon_API.Common.Interfaces;
 using Hair_Salon_API.DAL.Models;
 using Hair_Salon_API.DAL.UnitOfWork;
 using Hair_Salon_API.Services.Interfaces;
@@ -12,12 +13,14 @@ namespace Hair_Salon_API.Services.Implementations
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IReviewService _reviewService;
+        private readonly IEncryptService _encryptService;
 
-        public SalonService(IUnitOfWork unitOfWork, IMapper mapper, IReviewService reviewService)
+        public SalonService(IUnitOfWork unitOfWork, IMapper mapper, IReviewService reviewService, IEncryptService encryptService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _reviewService = reviewService;
+            _encryptService = encryptService;
         }
 
         public async Task<SalonModel> AddSalonAsync(SalonModel salonToAdd)
@@ -26,6 +29,7 @@ namespace Hair_Salon_API.Services.Implementations
 
             newSalon.DateAdded = DateTime.Now;
             newSalon.DateUpdated = DateTime.Now;
+            newSalon.Password = _encryptService.Encrypt(salonToAdd.Password);
 
             _unitOfWork.SalonRepository.Add(newSalon);
 
@@ -121,6 +125,7 @@ namespace Hair_Salon_API.Services.Implementations
             salonToUpdate.Id = existingSalon.Id;
             salonToUpdate.DateAdded = existingSalon.DateAdded;
             salonToUpdate.DateUpdated = DateTime.Now;
+            salonToUpdate.Password = existingSalon.Password;
 
             _mapper.Map(salonToUpdate, existingSalon);
 
@@ -129,6 +134,21 @@ namespace Hair_Salon_API.Services.Implementations
             await _unitOfWork.CommitAsync();
 
             return _mapper.Map<Salon, SalonModel>(existingSalon);
+        }
+
+        public async Task<SalonModel> Authenticate(AuthenticateRequest model)
+        {
+            Salon existingSalon = (await _unitOfWork.SalonRepository.FindAsync(x => x.Email == model.Email)).FirstOrDefault();
+            string encryptedPassword = _encryptService.Encrypt(model.Password);
+
+            if (existingSalon == null || existingSalon.Password != encryptedPassword)
+            {
+                return null;
+            }
+
+            SalonModel mappedExistingSalon = _mapper.Map<SalonModel>(existingSalon);
+
+            return mappedExistingSalon;
         }
     }
 }

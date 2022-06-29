@@ -13,5 +13,6 @@ namespace Hair_Salon_API.Services.Interfaces
         Task<IEnumerable<SalonGetModel>> GetSalonsAsync();
 
         Task<SalonModel> UpdateSalonAsync(int salonId, SalonModel salonToUpdate);
+        Task<SalonModel> Authenticate (AuthenticateRequest request);
     }
 }

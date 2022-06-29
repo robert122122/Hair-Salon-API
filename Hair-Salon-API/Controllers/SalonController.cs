@@ -38,7 +38,7 @@ namespace Hair_Salon_API.Controllers
         }
 
         [HttpPut("{salonId}")]
-        public async Task<SalonDTO> Put(int salonId, SalonPostDTO salonToUpdate)
+        public async Task<SalonDTO> Put(int salonId, SalonPutDTO salonToUpdate)
         {
             return _mapper.Map<SalonDTO>(await _salonService.UpdateSalonAsync(salonId, _mapper.Map<SalonModel>(salonToUpdate)));
         }

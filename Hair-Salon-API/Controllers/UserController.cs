@@ -20,27 +20,14 @@ namespace Hair_Salon_API.Controllers
             _mapper = mapper;
         }
 
-/*        [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate(AuthenticateRequest model)
-        {
-            AuthenticateResponse response = await _userService.Authenticate(model);
-
-            if (response == null)
-            {
-                return BadRequest(new { message = "Username or password is incorrect." });
-            }
-
-            return Ok(response);
-        }*/
-
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "User")]
         public async Task<IEnumerable<UserDTO>> Get()
         {
             return _mapper.Map<IEnumerable<UserDTO>>(await _userService.GetUsersAsync());
         }
 
-        [HttpGet("{userId}"),Authorize]
+        [HttpGet("{userId}"),Authorize(Roles = "User")]
         public async Task<UserDTO> Get(int userId)
         {
             return _mapper.Map<UserDTO>(await _userService.GetUserAsync(userId));
