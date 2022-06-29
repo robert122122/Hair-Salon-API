@@ -31,6 +31,12 @@ namespace Hair_Salon_API.Controllers
             return _mapper.Map<IEnumerable<BookingGetDTO>>(await _bookingService.GetBookingsByUserAsync(userId));
         }
 
+        [HttpGet("Salon/{salonId}")]
+        public async Task<IEnumerable<BookingGetDTO>> GetBookingsBySalon(int salonId)
+        {
+            return _mapper.Map<IEnumerable<BookingGetDTO>>(await _bookingService.GetBookingsBySalonAsync(salonId));
+        }
+
         [HttpGet("{bookingId}")]
         public async Task<BookingGetDTO> Get(int bookingId)
         {

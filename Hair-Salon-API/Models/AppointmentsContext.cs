@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace Hair_Salon_API.DAL.Models
+namespace Hair_Salon_API.Models
 {
     public partial class AppointmentsContext : DbContext
     {

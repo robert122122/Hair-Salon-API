@@ -123,6 +123,43 @@ namespace Hair_Salon_API.Services.Implementations
             return bookings;
         }
 
+        public async Task<IEnumerable<BookingGetModel>> GetBookingsBySalonAsync(int salonId)
+        {
+            Salon existingSalon = await _unitOfWork.SalonRepository.FindByIdAsync(salonId);
+            if (existingSalon == null)
+            {
+                throw new Exception("Salon does not exists!");
+            }
+
+            IEnumerable<BookingGetModel> bookings = _mapper.Map<IEnumerable<BookingGetModel>>(await _unitOfWork.BookingRepository.FindAsync(booking => booking.SalonId == salonId));
+
+            if (bookings == null)
+            {
+                throw new Exception("Bookings not found.");
+            }
+
+            foreach (BookingGetModel booking in bookings)
+            {
+                Booking existingBooking = await _unitOfWork.BookingRepository.FindByIdAsync(booking.Id);
+
+                User user = await _unitOfWork.UserRepository.FindByIdAsync(existingBooking.UserId);
+
+                Salon salon = await _unitOfWork.SalonRepository.FindByIdAsync(existingBooking.SalonId);
+                Service service = await _unitOfWork.ServiceRepository.FindByIdAsync(existingBooking.ServiceId);
+                Barber barber = await _unitOfWork.BarberRepository.FindByIdAsync(existingBooking.BarberId);
+
+                booking.User = user.FirstName + " " + user.LastName;
+                booking.Salon = salon.Name;
+                booking.Service = service.ServiceName;
+                booking.Barber = barber.FirstName + " " + barber.LastName;
+            }
+
+            bookings = bookings.OrderBy(booking => booking.BookingDate).ToList();
+
+
+            return bookings;
+        }
+
         public async Task<BookingModel> UpdateBookingAsync(int bookingId, BookingModel bookingToUpdate)
         {
             Booking existingBooking = await _unitOfWork.BookingRepository.FindByIdAsync(bookingId);

@@ -118,8 +118,7 @@ namespace Hair_Salon_API.Services.Implementations
             }
 
             UserModel mappedExistingUser = _mapper.Map<UserModel>(existingUser);
-/*            string token = generateJwtToken(mappedExistingUser);
-*/
+
             return mappedExistingUser;
         }
 

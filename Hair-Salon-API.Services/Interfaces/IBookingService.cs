@@ -12,6 +12,7 @@ namespace Hair_Salon_API.Services.Interfaces
 
         Task<IEnumerable<BookingGetModel>> GetBookingsAsync();
         Task<IEnumerable<BookingGetModel>> GetBookingsByUserAsync(int userId);
+        Task<IEnumerable<BookingGetModel>> GetBookingsBySalonAsync(int salonId);
 
         Task<BookingModel> UpdateBookingAsync(int bookingId, BookingModel bookingToUpdate);
     }

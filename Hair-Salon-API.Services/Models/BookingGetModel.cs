@@ -9,7 +9,7 @@ namespace Hair_Salon_API.Services.Models
     public class BookingGetModel
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string User { get; set; }
         public string Salon { get; set; }
         public string Service { get; set; }
         public string Barber { get; set; }

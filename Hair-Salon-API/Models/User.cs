@@ -1,4 +1,6 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 namespace Hair_Salon_API.Models
 {
     public partial class User
@@ -6,6 +8,7 @@ namespace Hair_Salon_API.Models
         public User()
         {
             Bookings = new HashSet<Booking>();
+            Reviews = new HashSet<Review>();
         }
 
         public int Id { get; set; }
@@ -19,5 +22,6 @@ namespace Hair_Salon_API.Models
         public string? Image { get; set; }
 
         public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

@@ -59,7 +59,6 @@ namespace Hair_Salon_API
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IBookingService, BookingService>();
             services.AddScoped<IServiceService, ServiceService>();
-            services.AddScoped<IServiceBarberService, ServiceBarberService>();
             services.AddScoped<IReviewService, ReviewService>();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, MailService>();
@@ -102,7 +101,7 @@ namespace Hair_Salon_API
 
             services.AddControllers();
 
-            services.AddSwaggerGen(c => { //<-- NOTE 'Add' instead of 'Configure'
+            services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Hair-Appointments",
@@ -150,7 +149,7 @@ namespace Hair_Salon_API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Cinema v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hair-Appointment v1"));
             }
 
             app.UseHttpsRedirection();

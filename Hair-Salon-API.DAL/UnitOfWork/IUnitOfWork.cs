@@ -10,7 +10,6 @@ namespace Hair_Salon_API.DAL.UnitOfWork
         IBookingRepository BookingRepository { get; }
         IServiceRepository ServiceRepository { get; }
         ISalonRepository SalonRepository { get; }
-        IServiceBarberRepository ServiceBarberRepository { get; }
         IReviewRepository ReviewRepository { get; }
 
         void Commit();
