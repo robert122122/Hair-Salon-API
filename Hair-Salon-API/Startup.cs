@@ -15,6 +15,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.FileProviders;
+using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 
 namespace Hair_Salon_API
 {
@@ -62,6 +64,10 @@ namespace Hair_Salon_API
             services.AddScoped<IReviewService, ReviewService>();
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddTransient<IMailService, MailService>();
+
+            services.AddMvc();
+
+/*            services.AddValidatorsFromAssemblyContaining<UserValidator>();*/
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
 

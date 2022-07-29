@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Hair_Salon_API.Models;
 using Hair_Salon_API.Services.Interfaces;
 using Hair_Salon_API.Services.Models;

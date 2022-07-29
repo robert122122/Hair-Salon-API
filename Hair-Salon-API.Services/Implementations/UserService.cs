@@ -10,7 +10,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Hair_Salon_API.Common.Interfaces;
-
+using FluentValidation;
+using FluentValidation.Results;
 
 namespace Hair_Salon_API.Services.Implementations
 {
@@ -20,6 +21,7 @@ namespace Hair_Salon_API.Services.Implementations
         private readonly IMapper _mapper;
         private readonly AppSettings _appSettings;
         private readonly IEncryptService _encryptService;
+/*        private readonly IValidator<User> _validator;*/
 
         public UserService(IUnitOfWork unitOfWork, IMapper mapper, IOptions<AppSettings> appSettings, IEncryptService encryptService)
         {
@@ -27,10 +29,12 @@ namespace Hair_Salon_API.Services.Implementations
             _mapper = mapper;
             _appSettings = appSettings.Value;
             _encryptService = encryptService;
+/*            _validator = validator;*/
         }
 
         public async Task<UserModel> AddUserAsync(UserModel userToAdd)
         {
+
             User existingUser = (await _unitOfWork.UserRepository.FindAsync(user => user.Email == userToAdd.Email)).FirstOrDefault();
             
             if (existingUser != null)

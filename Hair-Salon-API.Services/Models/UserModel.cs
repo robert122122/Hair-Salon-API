@@ -1,4 +1,6 @@
 ﻿
+using FluentValidation;
+using Hair_Salon_API.DAL.Models;
 using System.Text.Json.Serialization;
 
 namespace Hair_Salon_API.Services.Models
@@ -16,4 +18,5 @@ namespace Hair_Salon_API.Services.Models
         public DateTime DateUpdated { get; set; }
         public string? Image { get; set; }
     }
+
 }

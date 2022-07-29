@@ -24,4 +24,6 @@ namespace Hair_Salon_API.DAL.Models
         public virtual ICollection<Booking> Bookings { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
     }
+
+
 }
