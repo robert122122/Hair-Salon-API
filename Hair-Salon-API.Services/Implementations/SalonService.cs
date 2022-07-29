@@ -54,7 +54,7 @@ namespace Hair_Salon_API.Services.Implementations
             return _mapper.Map<Salon, SalonModel>(existingSalon);
         }
 
-        public async Task<SalonGetModel> GetSalonAsync(int salonId)
+        public async Task<SalonModel> GetSalonAsync(int salonId)
         {
             Salon existingSalon = await _unitOfWork.SalonRepository.FindByIdAsync(salonId);
 
@@ -65,7 +65,7 @@ namespace Hair_Salon_API.Services.Implementations
 
             IEnumerable<ReviewGetModel> salonReviews = await _reviewService.GetReviewsBySalonAsync(salonId);
 
-            SalonGetModel salon = _mapper.Map<SalonGetModel>(existingSalon);
+            SalonModel salon = _mapper.Map<SalonModel>(existingSalon);
 
             if (salonReviews.Count() < 1)
             {
@@ -126,8 +126,34 @@ namespace Hair_Salon_API.Services.Implementations
             salonToUpdate.DateAdded = existingSalon.DateAdded;
             salonToUpdate.DateUpdated = DateTime.Now;
             salonToUpdate.Password = existingSalon.Password;
+            salonToUpdate.AddressId = existingSalon.AddressId;
 
             _mapper.Map(salonToUpdate, existingSalon);
+
+            _unitOfWork.SalonRepository.Update(existingSalon);
+
+            await _unitOfWork.CommitAsync();
+
+            return _mapper.Map<Salon, SalonModel>(existingSalon);
+        }
+
+        public async Task<SalonModel> AddAddressToSalonAsync(int addressId, int salonId)
+        {
+            Salon existingSalon = await _unitOfWork.SalonRepository.FindByIdAsync(salonId);
+
+            if (existingSalon == null)
+            {
+                throw new Exception("Salon does not exist");
+            }
+
+            Address existingAddress = await _unitOfWork.AddressRepository.FindByIdAsync(addressId);
+
+            if (existingAddress == null)
+            {
+                throw new Exception("Address does not exist");
+            }
+
+            existingSalon.AddressId = addressId;
 
             _unitOfWork.SalonRepository.Update(existingSalon);
 

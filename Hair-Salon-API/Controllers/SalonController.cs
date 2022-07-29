@@ -26,9 +26,9 @@ namespace Hair_Salon_API.Controllers
         }
 
         [HttpGet("{salonId}")]
-        public async Task<SalonGetDTO> Get(int salonId)
+        public async Task<SalonDTO> Get(int salonId)
         {
-            return _mapper.Map<SalonGetDTO>(await _salonService.GetSalonAsync(salonId));
+            return _mapper.Map<SalonDTO>(await _salonService.GetSalonAsync(salonId));
         }
 
         [HttpPost]
@@ -41,6 +41,12 @@ namespace Hair_Salon_API.Controllers
         public async Task<SalonDTO> Put(int salonId, SalonPutDTO salonToUpdate)
         {
             return _mapper.Map<SalonDTO>(await _salonService.UpdateSalonAsync(salonId, _mapper.Map<SalonModel>(salonToUpdate)));
+        }
+
+        [HttpPut("{addressId}/{salonId}")]
+        public async Task<SalonDTO> Put(int addressId, int salonId)
+        {
+            return _mapper.Map<SalonDTO>(await _salonService.AddAddressToSalonAsync(addressId, salonId));
         }
 
         [HttpDelete("{salonId}")]
